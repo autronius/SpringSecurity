@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context 
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+ 	<beans:bean name="springSecurityFilterChain"
+		class="org.springframework.web.filter.DelegatingFilterProxy" />
+	<beans:bean id="webexpressionHandler" class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	 
+	<global-method-security secured-annotations="enabled"/>
+
+<!-- 	<authentication-manager>
+		<authentication-provider>
+			<user-service>
+				<user name="jimi" password="jimispassword" authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="bob" password="bobspassword" authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager> -->
+	
+	<authentication-manager> 
+		<!-- <authentication-provider user-service-ref="customUserDetailsServiceProvider"/>  if still using the built-in UserDetailsService-->
+		<authentication-provider ref="userAuthenticationManager"/> <!-- For Custom Authentication -->
+	</authentication-manager>
+
+	<http auto-config='true' access-denied-page="/accessDenied.jsp">
+		<intercept-url pattern="/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/accessDenied.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/secure/**" access="ROLE_ADMIN" />
+		<intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		
+		<form-login login-page="/login" 
+					login-processing-url="/login.do" 
+					username-parameter="username" 
+					password-parameter="password"
+					default-target-url="/defaultpage" 
+					authentication-failure-url="/accessDenied.jsp"
+					/>
+		<logout 	logout-url="/logout.do" 
+					delete-cookies="JSESSIONID" 
+					logout-success-url="/defaultpage.jsp" 
+					invalidate-session="true"
+					/>
+	</http> 
+
+</beans:beans>
+
+           

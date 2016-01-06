@@ -1,0 +1,43 @@
+<!-- Override default login and logout pages -->
+<!--         <security:form-login login-page="/login.html" 
+                             login-processing-url="/loginProcess" 
+                             default-target-url="/index.jsp" 
+                             authentication-failure-url="/login.html?login_error=1" />
+        <security:logout logout-url="/logout" logout-success-url="/logoutSuccess.html" /> -->
+
+
+<!-- The authentication is set to use jdbc based user authentication. Only the DataSource needs to be set on the security:jdbc-user-service element if the default tables are used. Although other tables can be used by setting custom queries on the element.
+<security:authentication-manager>
+        <security:authentication-provider >
+            <security:jdbc-user-service data-source-ref="dataSource" />
+        </security:authentication-provider>
+    </security:authentication-manager> -->
+    
+    
+        <!--
+    Usernames/Passwords are
+        rod/koala
+        dianne/emu
+        scott/wombat
+        peter/opal
+    -->
+<!--     <authentication-provider>
+        <password-encoder hash="md5"/>
+        <user-service>
+            <user name="rod" password="a564de63c2d0da68cf47586ee05984d7" authorities="ROLE_SUPERVISOR, ROLE_USER, ROLE_TELLER" />
+            <user name="dianne" password="65d15fe9156f9c4bbffd98085992a44e" authorities="ROLE_USER,ROLE_TELLER" />
+            <user name="scott" password="2b58af6dddbd072ed27ffc86725d7d3a" authorities="ROLE_USER" />
+            <user name="peter" password="22b5c9accc6e1ba628cedc63a72d57f8" authorities="ROLE_USER" />
+	    </user-service>
+	</authentication-provider> -->
+	
+	
+	
+	
+		<global-method-security secured-annotations="enabled" />
+		
+		
+		
+		
+		
+		

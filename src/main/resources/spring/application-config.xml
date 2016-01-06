@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    
+    <!-- Uncomment and add your base-package here:
+         <context:component-scan
+            base-package="org.springframework.samples.service"/>  -->
+   	<bean id="com.security.project.web.dao.impl.ElasticSearchTools" name="elasticSearchTools"
+		class="com.security.project.web.dao.impl.ElasticSearchTools" destroy-method="shutdown"><!--  //destroy-method="shutdown" -->
+	</bean>
+	
+	<bean id="com.security.project.web.service.provider.ServiceServiceP" name="serviceServiceProvider"
+		class="com.security.project.web.service.provider.ServiceServiceProvider">
+	</bean>
+	
+	<bean id="com.security.project.web.service.provider.UserServiceProvider" name="userServiceProvider"
+		class="com.security.project.web.service.provider.UserServiceProvider">
+		<constructor-arg ref="com.security.project.web.dao.impl.UserDaoImpl"/>
+	</bean>
+	
+	<bean id="com.security.project.web.service.provider.sec.CustomUserDetailsServiceProvider" name="customUserDetailsServiceProvider"
+		class="com.security.project.web.service.provider.sec.CustomUserDetailsServiceProvider">
+		<constructor-arg ref="com.security.project.web.dao.impl.UserDaoImpl"/>
+	</bean>
+	
+	<bean id="com.security.project.web.service.provider.sec.UserAuthenticationManager" name="userAuthenticationManager"
+		class="com.security.project.web.service.provider.sec.UserAuthenticationManager">
+		<constructor-arg ref="com.security.project.web.service.provider.UserServiceProvider"/>
+	</bean>
+	
+	<bean id="com.security.project.web.dao.impl.UserDaoImpl" name="userDaoImpl"
+		class="com.security.project.web.dao.impl.UserDaoImpl">
+		<constructor-arg ref="com.security.project.web.dao.impl.ElasticSearchTools"/>
+	</bean>
+	
+<!-- 	<bean id="com.security.project.web.dao.impl.RestfulDao" name="restfulDao"
+		class="com.security.project.web.dao.impl.RestfulDao">
+		<constructor-arg value="$project{recaptcha.verify.url}" />
+		<constructor-arg value="$project{time.to.connect.to.host.millis}" />
+		<constructor-arg value="$project{time.for.host.to.respond.millis}" />
+		<constructor-arg value="$project{proxy.host.addr}" />
+		<constructor-arg value="$project{proxy.port}" />
+	</bean> -->
+	
+	<bean id="com.security.project.web.domain.Configuration" name="configurationMap"
+			class="com.security.project.web.domain.Configuration">
+		<constructor-arg>
+			<map>
+				<entry key="time.to.connect.to.host.millis" value="$project{time.to.connect.to.host.millis}" />
+				<entry key="time.for.host.to.respond.millis" value="$project{time.for.host.to.respond.millis}" />
+				<entry key="proxy.port" value="$project{proxy.port}" />
+				<entry key="proxy.host.addr" value="$project{proxy.host.addr}" />
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="placeholderPrefix" value="$project{" />
+		<property name="placeholderSuffix" value="}" />
+		<property name="locations">
+			<list>
+				<value>classpath:project.properties</value>
+				<value>file:${project.configuration}</value>
+			</list>
+		</property>
+	</bean>
+</beans>
