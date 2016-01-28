@@ -24,6 +24,15 @@ public class MainController {
 /*		this.rDao = rDao;*/
 	}
 	
+	/*for answering LetsEncrypt challenges*/
+	@RequestMapping ("/.well-known/acme-challenge/**")
+	public ModelAndView certificateChallenge(HttpServletRequest request){
+				
+		ModelAndView mav = new ModelAndView("/jsp" + request.getRequestURI());
+						
+		return mav;
+	}
+	
 	@RequestMapping ("/login")
 	public ModelAndView defaultIndex(HttpServletRequest request){
 		
